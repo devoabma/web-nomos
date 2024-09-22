@@ -7,10 +7,29 @@ export function CopyContentField({ value }: { value: string }) {
   const [copied, setCopied] = useState(false)
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(value).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
+    if (
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === 'function'
+    ) {
+      navigator.clipboard.writeText(value).then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      })
+    } else {
+      // Fallback manual para navegadores sem suporte à API Clipboard
+      const textArea = document.createElement('textarea')
+      textArea.value = value
+      document.body.appendChild(textArea)
+      textArea.select()
+      try {
+        document.execCommand('copy')
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      } catch (err) {
+        console.error('Falha ao copiar texto: ', err)
+      }
+      document.body.removeChild(textArea)
+    }
   }
 
   return (

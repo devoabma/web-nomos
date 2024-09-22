@@ -1,31 +1,41 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { ClipboardCheck, Loader, LogIn } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { loginAdmin } from '@/api/login-admin'
+import { MessageFieldError } from '@/components/app/message-field-error'
+import { PasswordInput } from '@/components/app/password-input'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 const loginForm = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  email: z.string().email('Insira um endereço de e-mail válido.'),
+  password: z.string().min(6, 'A senha precisa ter pelo menos 6 caracteres.'),
 })
 
 type LoginForm = z.infer<typeof loginForm>
 
 export function LoginAdmin() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<LoginForm>()
+    formState: { isSubmitting, errors },
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginForm),
+    defaultValues: {
+      // O campo já vem preenchido do cadastro
+      email: searchParams.get('email') ?? '',
+    },
+  })
 
   // Função que realiza o login do administrador
   const { mutateAsync: authAdmin } = useMutation({
@@ -49,11 +59,8 @@ export function LoginAdmin() {
       toast.error('Credenciais fornecidas inválidas!', {
         description: 'Por favor, tente novamente.',
       })
-
-      console.log(err)
     }
   }
-
   return (
     <>
       <Helmet title="Login" />
@@ -84,22 +91,41 @@ export function LoginAdmin() {
             <div className="space-y-4">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="email">Seu melhor e-mail</Label>
-                <Input id="email" type="email" {...register('email')} />
+                <Input
+                  id="email"
+                  data-error={Boolean(errors.email)}
+                  className="data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
+                  type="email"
+                  {...register('email')}
+                />
+                {errors.email && (
+                  <MessageFieldError>{errors.email.message}</MessageFieldError>
+                )}
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="password">Sua senha</Label>
-                <Input
+                <PasswordInput
                   id="password"
-                  type="password"
+                  data-error={Boolean(errors.password)}
+                  className="data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
                   {...register('password')}
                 />
+                {errors.password && (
+                  <MessageFieldError>
+                    {errors.password.message}
+                  </MessageFieldError>
+                )}
               </div>
             </div>
 
             <Button
               type="submit"
-              disabled={isSubmitting}
+              disabled={
+                isSubmitting ||
+                Boolean(errors.email) ||
+                Boolean(errors.password)
+              }
               className="w-full select-none bg-amber-600 font-semibold transition-colors hover:bg-amber-700"
             >
               {isSubmitting ? (

@@ -1,4 +1,4 @@
-import { Eye, ThumbsUp } from 'lucide-react'
+import { CheckCircle, Eye, ThumbsUp } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
@@ -8,7 +8,21 @@ import { formatFullName } from '@/utils/format-full-name'
 import { CopyContentField } from '../lawyers/copy-content-field'
 import { LawyersDetails } from './lawyers-details'
 
-export function LawyersTableRow() {
+interface LawyersTableRowProps {
+  lawyers: {
+    id: string
+    name: string
+    cpf: string
+    oab: string
+    email: string
+    birth: string
+    telephone: string
+    informations_accepted: Date | null
+    registered: Date | null
+  }
+}
+
+export function LawyersTableRow({ lawyers }: LawyersTableRowProps) {
   return (
     <TableRow className="overflow-x-auto">
       <TableCell className="w-full border-r sm:w-auto">
@@ -22,47 +36,64 @@ export function LawyersTableRow() {
           </DialogTrigger>
 
           {/* Modal dos detalhes do advogado */}
-          <LawyersDetails />
+          <LawyersDetails lawyers={lawyers} />
         </Dialog>
       </TableCell>
 
       <TableCell className="w-full border-r sm:w-auto">
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-amber-400" />
-          <span className="font-medium text-muted-foreground">Pendente</span>
-        </div>
+        {lawyers.registered ? (
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-green-400" />
+            <span className="font-medium text-muted-foreground">
+              Registrado
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-amber-400" />
+            <span className="font-medium text-muted-foreground">Pendente</span>
+          </div>
+        )}
       </TableCell>
 
       <TableCell className="relative w-full border-r sm:w-auto">
-        {formatFullName('DALENE FERREIRA MELO DOS SANTOS')}
-        <CopyContentField
-          value={formatFullName('DALENE FERREIRA MELO DOS SANTOS')}
-        />
+        {formatFullName(lawyers.name)}
+        <CopyContentField value={formatFullName(lawyers.name)} />
       </TableCell>
 
       <TableCell className="relative w-full border-r sm:w-auto">
-        604.951.933.13
-        <CopyContentField value="604.951.933.13" />
+        {lawyers.cpf}
+        <CopyContentField value={lawyers.cpf} />
       </TableCell>
 
       <TableCell className="relative w-full border-r sm:w-auto">
-        dalenefmeloadv@gmail.com
-        <CopyContentField value="dalenefmeloadv@gmail.com" />
+        {lawyers.email}
+        <CopyContentField value={lawyers.email} />
       </TableCell>
 
       <TableCell className="relative w-full border-r sm:w-auto">
-        (98) 98329-1170
-        <CopyContentField value="98983291170" />
+        {lawyers.telephone}
+        <CopyContentField value={lawyers.telephone} />
       </TableCell>
 
       <TableCell className="flex w-full items-center justify-center sm:w-auto">
-        <Button
-          variant="outline"
-          className="border-amber-500 text-amber-500 transition-colors hover:bg-amber-600 hover:text-white"
-        >
-          <ThumbsUp className="mr-2 h-4 w-4" />
-          Confirmar
-        </Button>
+        {lawyers.registered ? (
+          <Button
+            variant="outline"
+            className="w-full cursor-auto select-none bg-green-600 text-white hover:bg-green-600 hover:text-white"
+          >
+            <CheckCircle className="mr-2 h-4 w-4" />
+            Confirmado
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            className="w-full border-amber-500 text-amber-500 transition-colors hover:bg-amber-600 hover:text-white"
+          >
+            <ThumbsUp className="mr-2 h-4 w-4" />
+            Confirmar
+          </Button>
+        )}
       </TableCell>
     </TableRow>
   )

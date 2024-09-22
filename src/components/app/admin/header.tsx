@@ -15,11 +15,11 @@ export function HeaderAdmin() {
         <Separator orientation="vertical" className="h-6" />
 
         <nav className="flex items-center justify-center space-x-4 max-md:hidden lg:space-x-6">
-          <HeaderNavLink to="/admin">
+          <HeaderNavLink to="/restrict/admin">
             <ClipboardList className="h-4 w-4" />
             Solicitações
           </HeaderNavLink>
-          <HeaderNavLink to="/report">
+          <HeaderNavLink to="/restrict/report">
             <FileDown className="h-4 w-4" />
             Exportar dados
           </HeaderNavLink>

@@ -11,12 +11,14 @@ interface LawyerPaginationProps {
   pageIndex: number
   totalCount: number
   perPage: number
+  onPageChange: (pageIndex: number) => Promise<void> | void
 }
 
 export function LawyerPagination({
   pageIndex,
   totalCount,
   perPage,
+  onPageChange,
 }: LawyerPaginationProps) {
   // Ex: 105 registros / 10 páginas = 10,5 | Arredonda para cima e fica 11 páginas
   const pages = Math.ceil(totalCount / perPage) || 1
@@ -24,31 +26,53 @@ export function LawyerPagination({
   return (
     <div className="flex items-center justify-between">
       <span className="text-sm text-muted-foreground">
-        Total de {totalCount} registros
+        {totalCount === 1
+          ? `Total de ${totalCount} registro`
+          : `Total de ${totalCount} registros`}
       </span>
 
       <div className="flex items-center gap-6 text-muted-foreground lg:gap-8">
         <div className="text-sm font-medium">
-          Página {pageIndex + 1} de {pages}
+          Página {pageIndex} de {pages}
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(1)}
+            variant="outline"
+            className="h-8 w-8 p-0"
+            disabled={pageIndex === 1}
+          >
             <ChevronsLeft className="h-4 w-4" />
             <span className="sr-only">Primera página</span>
           </Button>
 
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(pageIndex - 1)}
+            variant="outline"
+            className="h-8 w-8 p-0"
+            disabled={pageIndex === 1}
+          >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Página anterior</span>
           </Button>
 
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(pageIndex + 1)}
+            variant="outline"
+            className="h-8 w-8 p-0"
+            disabled={pages <= pageIndex}
+          >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Próxima página</span>
           </Button>
 
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(pages)}
+            variant="outline"
+            className="h-8 w-8 p-0"
+            disabled={pages <= pageIndex}
+          >
             <ChevronsRight className="h-4 w-4" />
             <span className="sr-only">Última página</span>
           </Button>
