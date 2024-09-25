@@ -1,8 +1,21 @@
+import 'dayjs/locale/pt-br'
+
+import dayjs from 'dayjs'
 import { CalendarCheck2, CheckCircle } from 'lucide-react'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
-export function AlertInfoApproved() {
+interface AlertInfoApprovedProps {
+  user: {
+    informations_accepted: string
+  }
+}
+
+export function AlertInfoApproved({ user }: AlertInfoApprovedProps) {
+  const formattedDateInformationAccpet = dayjs(
+    user.informations_accepted,
+  ).format('D [de] MMMM [de] YYYY [às] HH:mm[h]')
+
   return (
     <Alert
       variant="default"
@@ -29,7 +42,7 @@ export function AlertInfoApproved() {
               Data da confirmação dos dados:
             </span>
             <p className="ml-1.5 text-center text-xs font-medium text-muted-foreground">
-              02 de Março de 2024 às 14:30h.
+              {formattedDateInformationAccpet}
             </p>
           </div>
         </div>

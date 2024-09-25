@@ -1,11 +1,16 @@
-import { CheckCircle, Eye, ThumbsUp } from 'lucide-react'
+import { CheckCircle, Eye, ThumbsUp, X } from 'lucide-react'
+import { Tooltip } from 'react-tooltip'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { formatFullName } from '@/utils/format-full-name'
+import { formatMaskCPF } from '@/utils/format-mask-cpf'
+import { formatMaskPhone } from '@/utils/format-mask-phone'
 
 import { CopyContentField } from '../lawyers/copy-content-field'
+import { LawyerConfirmRegistered } from './lawyer-confirm-registered'
+import { LawyerRemoveRegistered } from './lawyer-remove-registered'
 import { LawyersDetails } from './lawyers-details'
 
 interface LawyersTableRowProps {
@@ -62,7 +67,7 @@ export function LawyersTableRow({ lawyers }: LawyersTableRowProps) {
       </TableCell>
 
       <TableCell className="relative w-full border-r sm:w-auto">
-        {lawyers.cpf}
+        {formatMaskCPF(lawyers.cpf)}
         <CopyContentField value={lawyers.cpf} />
       </TableCell>
 
@@ -72,11 +77,11 @@ export function LawyersTableRow({ lawyers }: LawyersTableRowProps) {
       </TableCell>
 
       <TableCell className="relative w-full border-r sm:w-auto">
-        {lawyers.telephone}
+        {formatMaskPhone(lawyers.telephone)}
         <CopyContentField value={lawyers.telephone} />
       </TableCell>
 
-      <TableCell className="flex w-full items-center justify-center sm:w-auto">
+      <TableCell className="relative w-full border-r sm:w-auto">
         {lawyers.registered ? (
           <Button
             variant="outline"
@@ -86,14 +91,44 @@ export function LawyersTableRow({ lawyers }: LawyersTableRowProps) {
             Confirmado
           </Button>
         ) : (
-          <Button
-            variant="outline"
-            className="w-full border-amber-500 text-amber-500 transition-colors hover:bg-amber-600 hover:text-white"
-          >
-            <ThumbsUp className="mr-2 h-4 w-4" />
-            Confirmar
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full border-amber-500 text-amber-500 transition-colors hover:bg-amber-600 hover:text-white"
+              >
+                <ThumbsUp className="mr-2 h-4 w-4" />
+                Confirmar
+              </Button>
+            </DialogTrigger>
+
+            <LawyerConfirmRegistered lawyers={lawyers} />
+          </Dialog>
         )}
+      </TableCell>
+
+      <TableCell className="flex w-full items-center justify-center">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              size="xs"
+              data-tooltip-id="remove-tooltip"
+              className="flex cursor-pointer select-none items-center justify-center transition-colors hover:text-red-500"
+            >
+              <X className="h-4 w-4 font-bold" />
+            </Button>
+          </DialogTrigger>
+
+          <LawyerRemoveRegistered lawyers={lawyers} />
+        </Dialog>
+
+        <Tooltip
+          id="remove-tooltip"
+          content="Remover"
+          place="top"
+          className="animate-in animate-out"
+        />
       </TableCell>
     </TableRow>
   )

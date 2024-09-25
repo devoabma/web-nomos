@@ -7,12 +7,12 @@ export const API = axios.create({
   withCredentials: true,
 })
 
-const API_DELAY = true
+// const API_DELAY = true
 
-if (API_DELAY) {
-  API.interceptors.request.use(async (config) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+// if (API_DELAY) {
+//   API.interceptors.request.use(async (config) => {
+//     await new Promise((resolve) => setTimeout(resolve, 2000))
 
-    return config
-  })
-}
+//     return config
+//   })
+// }

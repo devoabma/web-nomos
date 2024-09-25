@@ -34,10 +34,10 @@ export function CopyContentField({ value }: { value: string }) {
 
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       size="icon"
       onClick={copyToClipboard}
-      className="absolute right-2 top-1/2 -translate-y-1/2"
+      className="absolute right-2 top-1/2 -translate-y-1/2 border-primary/30"
     >
       {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
     </Button>

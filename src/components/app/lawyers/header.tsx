@@ -19,7 +19,7 @@ export function Header() {
             <Database className="h-4 w-4" />
             Meus dados
           </HeaderNavLink>
-          <HeaderNavLink to="/portal">
+          <HeaderNavLink to="/portal-advocacia">
             <MonitorCheck className="h-4 w-4" />
             Portal da Advocacia
           </HeaderNavLink>

@@ -6,6 +6,7 @@ import { AppLayoutLawyer } from './pages/_layouts/lawyers/app'
 import { AuthLayoutLawyer } from './pages/_layouts/lawyers/auth'
 import { DashAdmin } from './pages/app/dash-admin'
 import { DashLawyer } from './pages/app/dash-lawyer'
+import { PortalAdvocacia } from './pages/app/portal-advocacia'
 import { LoginAdmin } from './pages/auth/login-admin'
 import { LoginLawyer } from './pages/auth/login-lawyer'
 import { RegisterAdmin } from './pages/auth/register-admin'
@@ -18,7 +19,10 @@ export const router = createBrowserRouter([
     path: '/',
     element: <AppLayoutLawyer />,
     errorElement: <NotFoundLawyer />,
-    children: [{ path: '/', element: <DashLawyer /> }],
+    children: [
+      { path: '/', element: <DashLawyer /> },
+      { path: '/portal-advocacia', element: <PortalAdvocacia /> },
+    ],
   },
   {
     path: '/',

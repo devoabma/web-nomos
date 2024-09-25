@@ -1,8 +1,23 @@
+import 'dayjs/locale/pt-br'
+
+import dayjs from 'dayjs'
 import { CalendarCheck2, CheckCircle, Mail } from 'lucide-react'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
-export function AlertInfoRegistered() {
+dayjs.locale('pt-br')
+
+interface AlertInfoRegisteredProps {
+  user: {
+    registered: string
+  }
+}
+
+export function AlertInfoRegistered({ user }: AlertInfoRegisteredProps) {
+  const formattedDateRegistered = dayjs(user.registered).format(
+    'D [de] MMMM [de] YYYY [às] HH:mm[h]',
+  )
+
   return (
     <Alert
       variant="default"
@@ -18,9 +33,9 @@ export function AlertInfoRegistered() {
           sistema GERID foi concluído com sucesso.
         </p>
         <p className="mb-4">
-          Em breve, você receberá um e-mail contendo um link para acessar o
-          sistema. Por favor, verifique sua caixa de entrada e, se necessário, a
-          pasta de spam.
+          Em breve, você receberá um e-mail de confirmação contendo suas
+          informações que foram cadastradas. Por favor, verifique sua caixa de
+          entrada e, se necessário, a pasta de spam.
         </p>
         <div className="flex flex-col items-center gap-2 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center justify-center text-green-600">
@@ -34,7 +49,7 @@ export function AlertInfoRegistered() {
                 Data do cadastro no sistema do GERID
               </span>
               <p className="ml-1.5 text-center text-xs font-medium text-muted-foreground">
-                02 de Março de 2024 às 14:30h.
+                {formattedDateRegistered}
               </p>
             </div>
           </div>

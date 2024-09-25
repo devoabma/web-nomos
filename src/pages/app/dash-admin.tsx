@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
+import { approvedMetrics } from '@/api/approved-metrics'
 import { fetchLawyers } from '@/api/fetch-lawyers'
 import { LawyerPagination } from '@/components/app/admin/lawyers-pagination'
 import { LawyersTableFilters } from '@/components/app/admin/lawyers-table-filters'
@@ -23,10 +24,7 @@ export function DashAdmin() {
   const cpf = searcParams.get('cpf')
   const email = searcParams.get('email')
 
-  const pageIndex = z.coerce
-    .number()
-    // .transform((page) => page - 1)
-    .parse(searcParams.get('page') ?? '1')
+  const pageIndex = z.coerce.number().parse(searcParams.get('page') ?? '1')
 
   const { data: result } = useQuery({
     // Sempre que tivermos uma função na requisicão, precisamos adicicionar o parâmetro que vem na queryKey
@@ -40,8 +38,10 @@ export function DashAdmin() {
       }),
   })
 
-  const totalCount =
-    result?.lawyers.filter((lawyer) => lawyer.informations_accepted).length || 0
+  const { data: countApproved } = useQuery({
+    queryKey: ['approved-metrics'],
+    queryFn: approvedMetrics,
+  })
 
   function handlePaginate(pageIndex: number) {
     setSearchParams((stateUrl) => {
@@ -73,10 +73,10 @@ export function DashAdmin() {
                   </TableHead>
                   <TableHead className="font-medium">Advogado(a)</TableHead>
                   <TableHead className="w-[200px] font-medium">CPF</TableHead>
-                  <TableHead className="w-[284px] font-medium">
+                  <TableHead className="w-[310px] font-medium">
                     E-mail
                   </TableHead>
-                  <TableHead className="w-[200px] font-medium">
+                  <TableHead className="w-[170px] font-medium">
                     Telefone
                   </TableHead>
                   <TableHead className="w-[164px] font-medium"></TableHead>
@@ -87,11 +87,7 @@ export function DashAdmin() {
                 {/* Envia somente os advogados que confirmaram seus dados */}
                 {result &&
                   result.lawyers.map((lawyer) => {
-                    return (
-                      lawyer.informations_accepted && (
-                        <LawyersTableRow key={lawyer.id} lawyers={lawyer} />
-                      )
-                    )
+                    return <LawyersTableRow key={lawyer.id} lawyers={lawyer} />
                   })}
               </TableBody>
             </Table>
@@ -100,7 +96,7 @@ export function DashAdmin() {
           {result && (
             <LawyerPagination
               pageIndex={pageIndex}
-              totalCount={totalCount}
+              totalCount={countApproved}
               perPage={10}
               onPageChange={handlePaginate}
             />

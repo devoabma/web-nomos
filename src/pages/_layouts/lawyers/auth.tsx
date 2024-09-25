@@ -12,8 +12,10 @@ export function AuthLayoutLawyer() {
         </div>
 
         <footer className="text-sm">
-          &copy; {new Date().getFullYear()} - Gerência de Tecnologia da
-          Informação
+          <a href="/restrict/admin/login">
+            &copy; {new Date().getFullYear()} - Gerência de Tecnologia da
+            Informação
+          </a>
         </footer>
       </div>
 

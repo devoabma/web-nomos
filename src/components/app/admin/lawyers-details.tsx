@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { formatFullName } from '@/utils/format-full-name'
+import { formatMaskCPF } from '@/utils/format-mask-cpf'
+import { formatMaskPhone } from '@/utils/format-mask-phone'
 
 dayjs.locale('pt-br')
 
@@ -83,7 +85,9 @@ export function LawyersDetails({ lawyers }: LawyersDetailsProps) {
               </div>
               <div>
                 <h4 className="mb-1 text-sm font-medium text-gray-500">CPF</h4>
-                <p className="text-base font-medium">{lawyers.cpf}</p>
+                <p className="text-base font-medium">
+                  {formatMaskCPF(lawyers.cpf)}
+                </p>
               </div>
               <div>
                 <h4 className="mb-1 text-sm font-medium text-gray-500">
@@ -95,7 +99,9 @@ export function LawyersDetails({ lawyers }: LawyersDetailsProps) {
                 <h4 className="mb-1 text-sm font-medium text-gray-500">
                   Telefone
                 </h4>
-                <p className="text-base font-medium">{lawyers.telephone}</p>
+                <p className="text-base font-medium">
+                  {formatMaskPhone(lawyers.telephone)}
+                </p>
               </div>
             </div>
           </div>
@@ -129,7 +135,9 @@ export function LawyersDetails({ lawyers }: LawyersDetailsProps) {
               </div>
               <div>
                 <h4 className="mb-1 text-sm font-medium text-gray-500">CPF</h4>
-                <p className="text-base font-medium">{lawyers.cpf}</p>
+                <p className="text-base font-medium">
+                  {formatMaskCPF(lawyers.cpf)}
+                </p>
               </div>
               <div>
                 <h4 className="mb-1 text-sm font-medium text-gray-500">
@@ -141,7 +149,9 @@ export function LawyersDetails({ lawyers }: LawyersDetailsProps) {
                 <h4 className="mb-1 text-sm font-medium text-gray-500">
                   Telefone
                 </h4>
-                <p className="text-base font-medium">{lawyers.telephone}</p>
+                <p className="text-base font-medium">
+                  {formatMaskPhone(lawyers.telephone)}
+                </p>
               </div>
             </div>
           </div>

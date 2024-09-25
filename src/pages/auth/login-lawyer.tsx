@@ -1,38 +1,59 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { ClipboardCheck, Loader, LogIn } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { loginLawyers } from '@/api/login-lawyers'
+import { MessageFieldError } from '@/components/app/message-field-error'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 const loginForm = z.object({
-  cpf: z.string(),
-  oab: z.string().max(7),
+  cpf: z.string().min(11, 'Insira um CPF válido.'),
+  oab: z.string().min(1, 'Este campo é obrigatório.'),
 })
 
 type LoginForm = z.infer<typeof loginForm>
 
 export function LoginLawyer() {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<LoginForm>()
+    formState: { isSubmitting, errors },
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginForm),
+    defaultValues: {
+      cpf: searchParams.get('cpf') ?? '',
+      oab: searchParams.get('oab') ?? '',
+    },
+  })
+
+  // Função que realizar o login do advogado(a)
+  const { mutateAsync: loginLawyersFn } = useMutation({
+    mutationFn: loginLawyers,
+  })
 
   async function handleLoginLawyer(data: LoginForm) {
     try {
-      console.log({ data })
-
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await loginLawyersFn({
+        cpf: data.cpf,
+        oab: data.oab,
+      })
 
       toast.success('Login realizado com sucesso!', {
         description:
           'Consulte seu painel para gerenciar e acessar seus dados profissionais.',
       })
+
+      navigate('/')
     } catch {
       toast.error('Credenciais fornecidas inválidas!', {
         description: 'Por favor, tente novamente.',
@@ -73,18 +94,38 @@ export function LoginLawyer() {
             <div className="space-y-4">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="cpf">Seu CPF</Label>
-                <Input id="cpf" type="text" {...register('cpf')} />
+                <Input
+                  id="cpf"
+                  data-error={Boolean(errors.cpf)}
+                  className="data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
+                  type="text"
+                  {...register('cpf')}
+                />
+                {errors.cpf && (
+                  <MessageFieldError>{errors.cpf.message}</MessageFieldError>
+                )}
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="oab">Número da OAB</Label>
-                <Input id="oab" type="text" {...register('oab')} />
+                <Input
+                  id="oab"
+                  data-error={Boolean(errors.oab)}
+                  className="data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
+                  type="text"
+                  {...register('oab')}
+                />
+                {errors.oab && (
+                  <MessageFieldError>{errors.oab.message}</MessageFieldError>
+                )}
               </div>
             </div>
 
             <Button
               type="submit"
-              disabled={isSubmitting}
+              disabled={
+                isSubmitting || Boolean(errors.cpf) || Boolean(errors.oab)
+              }
               className="w-full select-none font-semibold transition-all"
             >
               {isSubmitting ? (

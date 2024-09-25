@@ -33,7 +33,7 @@ export function HeaderAccountMenu() {
     mutationFn: logoutAdmin,
     onSuccess: () => {
       // replace => força o administrador a não voltar para o página anterior
-      navigate('/restrict/admin/login', { replace: true })
+      navigate('/restrict/admin/login?logout=true', { replace: true })
     },
   })
 

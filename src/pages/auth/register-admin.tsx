@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 import { ClipboardCheck, Loader, LogIn } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -55,13 +55,10 @@ export function RegisterAdmin() {
 
       navigate(`/restrict/admin/login?email=${data.email}`)
     } catch (err) {
-      if (err instanceof AxiosError) {
-        toast.error('Administrador já cadastrado na plataforma!', {
-          description:
-            'Já existe uma conta com este e-mail. Por favor, realize seu login.',
+      if (isAxiosError(err)) {
+        toast.error('Houve um problema com o cadastro.', {
+          description: err.response?.data.message,
         })
-
-        navigate(`/restrict/admin/login?email=${data.email}`)
 
         return
       }
@@ -133,11 +130,10 @@ export function RegisterAdmin() {
 
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="password">Defina uma senha</Label>
-                <Input
+                <PasswordInput
                   id="password"
                   data-error={Boolean(errors.password)}
                   className="data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
-                  type="password"
                   {...register('password')}
                 />
                 {errors.password && (
