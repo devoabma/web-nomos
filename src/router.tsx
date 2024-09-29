@@ -17,19 +17,19 @@ import { NotFoundLawyer } from './pages/not-found/404-lawyer'
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <AppLayoutLawyer />,
+    element: <AuthLayoutLawyer />,
     errorElement: <NotFoundLawyer />,
     children: [
-      { path: '/', element: <DashLawyer /> },
-      { path: '/portal-advocacia', element: <PortalAdvocacia /> },
+      { path: '/', element: <LoginLawyer /> },
+      { path: '/register', element: <RegisterLawyer /> },
     ],
   },
   {
     path: '/',
-    element: <AuthLayoutLawyer />,
+    element: <AppLayoutLawyer />,
     children: [
-      { path: '/login', element: <LoginLawyer /> },
-      { path: '/register', element: <RegisterLawyer /> },
+      { path: '/dashboard', element: <DashLawyer /> },
+      { path: '/portal-advocacia', element: <PortalAdvocacia /> },
     ],
   },
   {

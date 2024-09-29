@@ -56,7 +56,7 @@ export function LawyersDetails({ lawyers }: LawyersDetailsProps) {
                 <div className="flex items-center space-x-2 text-green-700">
                   <CalendarDays className="h-4 w-4" />
                   <span className="text-sm font-medium">
-                    Data da Confirmação do Registro
+                    Data da Confirmação do Registro no GERID
                   </span>
                 </div>
                 <p className="text-lg font-bold text-green-800">
@@ -68,7 +68,7 @@ export function LawyersDetails({ lawyers }: LawyersDetailsProps) {
                 <div className="flex items-center space-x-2 text-sky-700">
                   <CalendarDays className="h-3 w-3" />
                   <span className="text-xs font-medium">
-                    Data de Aprovação do Advogado(a)
+                    Data da Confirmação dos Dados pelo Advogado(a)
                   </span>
                 </div>
                 <p className="text-xs font-bold text-sky-700">
@@ -111,7 +111,7 @@ export function LawyersDetails({ lawyers }: LawyersDetailsProps) {
           <DialogHeader>
             <DialogTitle>Informações do Advogado(a)</DialogTitle>
             <DialogDescription>
-              Detalhes da aprovação dos dados
+              Detalhes da confirmação dos dados
             </DialogDescription>
           </DialogHeader>
           <div className="mt-4">
@@ -119,7 +119,9 @@ export function LawyersDetails({ lawyers }: LawyersDetailsProps) {
               <CardContent className="pt-6">
                 <div className="flex items-center space-x-2 text-blue-700">
                   <CalendarDays className="h-4 w-4" />
-                  <span className="text-sm font-medium">Data de Aprovação</span>
+                  <span className="text-sm font-medium">
+                    Data da Confirmação dos Dados
+                  </span>
                 </div>
                 <p className="mt-1 text-lg font-bold text-blue-800">
                   {formattedDateInformationAccpet}

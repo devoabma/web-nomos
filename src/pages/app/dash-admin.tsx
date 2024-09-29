@@ -58,7 +58,9 @@ export function DashAdmin() {
       <MetricsLawyers />
 
       <div className="mt-6 flex flex-col gap-4">
-        <h1 className="text-3xl font-bold tracking-tight">Solicitações</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold tracking-tight">Solicitações</h1>
+        </div>
 
         <div className="space-y-2.5">
           <LawyersTableFilters />

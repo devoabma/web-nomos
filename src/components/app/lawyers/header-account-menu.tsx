@@ -30,7 +30,7 @@ export function HeaderAccountMenu() {
       mutationFn: logoutLawyer,
       onSuccess: () => {
         // replace => força o administrador a não voltar para o página anterior
-        navigate('/login?logout=true', { replace: true })
+        navigate('/?logout=true', { replace: true })
       },
     })
 
@@ -64,7 +64,7 @@ export function HeaderAccountMenu() {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-64">
+      <DropdownMenuContent align="end" className="w-full">
         <DropdownMenuLabel className="flex flex-col gap-1.5">
           <span>{formatFullName(lawyer.user.name)}</span>
           <span className="text-sm font-normal text-muted-foreground">

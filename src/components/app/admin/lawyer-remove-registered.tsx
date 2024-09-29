@@ -127,7 +127,6 @@ export function LawyerRemoveRegistered({
 
           <DialogClose asChild>
             <Button variant="outline" className="w-full">
-              <UserRoundX className="mr-2 h-4 w-4" />
               Cancelar
             </Button>
           </DialogClose>

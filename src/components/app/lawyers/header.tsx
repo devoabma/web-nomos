@@ -15,7 +15,7 @@ export function Header() {
         <Separator orientation="vertical" className="h-6" />
 
         <nav className="flex items-center justify-center space-x-4 max-md:hidden lg:space-x-6">
-          <HeaderNavLink to="/">
+          <HeaderNavLink to="/dashboard">
             <Database className="h-4 w-4" />
             Meus dados
           </HeaderNavLink>

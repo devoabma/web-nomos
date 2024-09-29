@@ -3,7 +3,8 @@ import { useMutation } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { ClipboardCheck, Loader, LogIn } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
+import { PatternFormat } from 'react-number-format'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -29,9 +30,14 @@ export function RegisterLawyer() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { isSubmitting, errors },
   } = useForm<RegisterForm>({
     resolver: zodResolver(registerForm),
+    defaultValues: {
+      cpf: '',
+      birth: '',
+    },
   })
 
   const { mutateAsync: registerLawyersFn } = useMutation({
@@ -50,14 +56,12 @@ export function RegisterLawyer() {
         description: 'Agora você poderá se logar na plataforma.',
       })
 
-      navigate(`/login?cpf=${data.cpf}&oab=${data.oab}`)
+      navigate(`/?cpf=${data.cpf}&oab=${data.oab}`)
     } catch (err) {
       if (isAxiosError(err)) {
         toast.error('Não podemos seguir com a solicitação!', {
           description: err.response?.data.message,
         })
-
-        console.log(err.response?.data)
       }
     }
   }
@@ -72,7 +76,7 @@ export function RegisterLawyer() {
           asChild
           className="absolute right-8 top-8 border border-primary/40"
         >
-          <Link to="/login">
+          <Link to="/">
             Já possue cadastro? Entre aqui
             <LogIn className="ml-1.5 h-5 w-5" />
           </Link>
@@ -95,12 +99,27 @@ export function RegisterLawyer() {
             <div className="space-y-4">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="cpf">Seu CPF</Label>
-                <Input
-                  id="cpf"
-                  data-error={Boolean(errors.cpf)}
-                  className="data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
-                  type="text"
-                  {...register('cpf')}
+                <Controller
+                  control={control}
+                  name="cpf"
+                  render={({ field: { onChange, name, value } }) => {
+                    return (
+                      <PatternFormat
+                        format="###.###.###-##"
+                        name={name}
+                        value={value}
+                        onValueChange={(values) => {
+                          // values.value contém o valor sem formatação
+                          onChange(values.value)
+                        }}
+                        defaultValue=""
+                        autoComplete="off"
+                        allowEmptyFormatting={false}
+                        data-error={Boolean(errors.cpf)}
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
+                      />
+                    )
+                  }}
                 />
                 {errors.cpf && (
                   <MessageFieldError>{errors.cpf.message}</MessageFieldError>
@@ -123,12 +142,27 @@ export function RegisterLawyer() {
 
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="birth">Data de Nascimento</Label>
-                <Input
-                  id="birth"
-                  data-error={Boolean(errors.birth)}
-                  className="data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
-                  type="text"
-                  {...register('birth')}
+                <Controller
+                  control={control}
+                  name="birth"
+                  render={({ field: { onChange, name, value } }) => {
+                    return (
+                      <PatternFormat
+                        format="##/##/####"
+                        name={name}
+                        value={value}
+                        onValueChange={(values) => {
+                          // values.value contém o valor sem formatação
+                          onChange(values.value)
+                        }}
+                        defaultValue=""
+                        autoComplete="off"
+                        allowEmptyFormatting={false}
+                        data-error={Boolean(errors.birth)}
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
+                      />
+                    )
+                  }}
                 />
                 {errors.birth && (
                   <MessageFieldError>{errors.birth.message}</MessageFieldError>

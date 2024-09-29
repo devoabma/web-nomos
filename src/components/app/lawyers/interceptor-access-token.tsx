@@ -16,6 +16,7 @@ export const InterceptorAccessToken = () => {
       (response) => {
         // Resetar o estado caso a resposta seja bem-sucedida
         toastDisplayed.current = false
+
         return response
       },
       (error: AxiosError) => {
@@ -33,7 +34,7 @@ export const InterceptorAccessToken = () => {
                 'Você precisa ser um advogado(a) e deve estar logado.',
             })
 
-            navigate('/login?error=true', { replace: true })
+            navigate('/?error=true', { replace: true })
 
             // Marca que o toast foi exibido
             toastDisplayed.current = true

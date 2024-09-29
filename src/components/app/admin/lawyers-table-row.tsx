@@ -1,5 +1,4 @@
 import { CheckCircle, Eye, ThumbsUp, X } from 'lucide-react'
-import { Tooltip } from 'react-tooltip'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
@@ -113,8 +112,7 @@ export function LawyersTableRow({ lawyers }: LawyersTableRowProps) {
             <Button
               variant="outline"
               size="xs"
-              data-tooltip-id="remove-tooltip"
-              className="flex cursor-pointer select-none items-center justify-center transition-colors hover:text-red-500"
+              className="flex cursor-pointer select-none items-center justify-center transition-colors hover:border-red-500 hover:text-red-500"
             >
               <X className="h-4 w-4 font-bold" />
             </Button>
@@ -122,13 +120,6 @@ export function LawyersTableRow({ lawyers }: LawyersTableRowProps) {
 
           <LawyerRemoveRegistered lawyers={lawyers} />
         </Dialog>
-
-        <Tooltip
-          id="remove-tooltip"
-          content="Remover"
-          place="top"
-          className="animate-in animate-out"
-        />
       </TableCell>
     </TableRow>
   )

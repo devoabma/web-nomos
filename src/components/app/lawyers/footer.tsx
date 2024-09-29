@@ -49,7 +49,7 @@ export function Footer() {
           exit={{ opacity: 0, x: 100 }}
           transition={{ duration: 0.9 }}
         >
-          <FooterLinkMenu link="/" icon={Database}>
+          <FooterLinkMenu link="/dashboard" icon={Database}>
             Meus Dados
           </FooterLinkMenu>
           <FooterLinkMenu link="/portal-advocacia" icon={MonitorCheck}>

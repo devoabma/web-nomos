@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { ClipboardCheck, Loader, LogIn } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
+import { PatternFormat } from 'react-number-format'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -27,6 +29,7 @@ export function LoginLawyer() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { isSubmitting, errors },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginForm),
@@ -53,11 +56,13 @@ export function LoginLawyer() {
           'Consulte seu painel para gerenciar e acessar seus dados profissionais.',
       })
 
-      navigate('/')
-    } catch {
-      toast.error('Credenciais fornecidas inválidas!', {
-        description: 'Por favor, tente novamente.',
-      })
+      navigate('/dashboard')
+    } catch (err) {
+      if (isAxiosError(err)) {
+        toast.error('Não foi possível processar sua solicitação!', {
+          description: err.response?.data.message,
+        })
+      }
     }
   }
 
@@ -94,12 +99,27 @@ export function LoginLawyer() {
             <div className="space-y-4">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="cpf">Seu CPF</Label>
-                <Input
-                  id="cpf"
-                  data-error={Boolean(errors.cpf)}
-                  className="data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
-                  type="text"
-                  {...register('cpf')}
+                <Controller
+                  control={control}
+                  name="cpf"
+                  render={({ field: { onChange, name, value } }) => {
+                    return (
+                      <PatternFormat
+                        format="###.###.###-##"
+                        name={name}
+                        value={value}
+                        onValueChange={(values) => {
+                          // values.value contém o valor sem formatação
+                          onChange(values.value)
+                        }}
+                        defaultValue=""
+                        autoComplete="off"
+                        allowEmptyFormatting={false}
+                        data-error={Boolean(errors.cpf)}
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[error=true]:border-red-600 data-[error=true]:focus-visible:ring-0"
+                      />
+                    )
+                  }}
                 />
                 {errors.cpf && (
                   <MessageFieldError>{errors.cpf.message}</MessageFieldError>
