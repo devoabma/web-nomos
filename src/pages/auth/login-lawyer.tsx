@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
+import { motion } from 'framer-motion'
 import { ClipboardCheck, Loader, LogIn } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 import { Controller, useForm } from 'react-hook-form'
@@ -39,7 +40,6 @@ export function LoginLawyer() {
     },
   })
 
-  // Função que realizar o login do advogado(a)
   const { mutateAsync: loginLawyersFn } = useMutation({
     mutationFn: loginLawyers,
   })
@@ -82,7 +82,12 @@ export function LoginLawyer() {
           </Link>
         </Button>
 
-        <div className="flex w-[21.87rem] flex-col justify-center gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="flex w-[21.87rem] flex-col justify-center gap-6"
+        >
           <div className="flex flex-col gap-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
               Acessar a plataforma
@@ -92,12 +97,20 @@ export function LoginLawyer() {
             </p>
           </div>
 
-          <form
+          <motion.form
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
             className="space-y-6"
             onSubmit={handleSubmit(handleLoginLawyer)}
           >
             <div className="space-y-4">
-              <div className="flex flex-col gap-1.5">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+                className="flex flex-col gap-1.5"
+              >
                 <Label htmlFor="cpf">Seu CPF</Label>
                 <Controller
                   control={control}
@@ -109,7 +122,6 @@ export function LoginLawyer() {
                         name={name}
                         value={value}
                         onValueChange={(values) => {
-                          // values.value contém o valor sem formatação
                           onChange(values.value)
                         }}
                         defaultValue=""
@@ -124,9 +136,14 @@ export function LoginLawyer() {
                 {errors.cpf && (
                   <MessageFieldError>{errors.cpf.message}</MessageFieldError>
                 )}
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col gap-1.5">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+                className="flex flex-col gap-1.5"
+              >
                 <Label htmlFor="oab">Número da OAB</Label>
                 <Input
                   id="oab"
@@ -138,28 +155,34 @@ export function LoginLawyer() {
                 {errors.oab && (
                   <MessageFieldError>{errors.oab.message}</MessageFieldError>
                 )}
-              </div>
+              </motion.div>
             </div>
 
-            <Button
-              type="submit"
-              disabled={
-                isSubmitting || Boolean(errors.cpf) || Boolean(errors.oab)
-              }
-              className="w-full select-none font-semibold transition-all"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
             >
-              {isSubmitting ? (
-                <>
-                  <Loader className="ml-1.5 h-5 w-5 animate-spin" />
-                </>
-              ) : (
-                <>
-                  Entrar <LogIn className="ml-1.5 h-5 w-5" />
-                </>
-              )}
-            </Button>
-          </form>
-        </div>
+              <Button
+                type="submit"
+                disabled={
+                  isSubmitting || Boolean(errors.cpf) || Boolean(errors.oab)
+                }
+                className="w-full select-none font-semibold transition-all"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader className="ml-1.5 h-5 w-5 animate-spin" />
+                  </>
+                ) : (
+                  <>
+                    Entrar <LogIn className="ml-1.5 h-5 w-5" />
+                  </>
+                )}
+              </Button>
+            </motion.div>
+          </motion.form>
+        </motion.div>
       </div>
     </>
   )

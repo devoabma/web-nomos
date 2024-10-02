@@ -10,7 +10,7 @@ import { FooterLinkMenu } from './footer-link-menu'
 
 export function Footer() {
   return (
-    <div className="mt-4 flex flex-col items-center justify-center overflow-x-hidden border-t">
+    <div className="mt-4 flex flex-col items-center justify-center overflow-x-hidden border-t px-4">
       <div className="container flex h-32 items-center justify-between gap-2 overflow-hidden">
         <motion.div
           className="space-y-4"
