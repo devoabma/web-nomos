@@ -9,7 +9,7 @@ import { router } from './router'
 export function App() {
   return (
     <HelmetProvider>
-      <Helmet titleTemplate="%s | OAB" />
+      <Helmet titleTemplate="%s OAB" />
 
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
