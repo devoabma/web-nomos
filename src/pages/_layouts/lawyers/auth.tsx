@@ -22,7 +22,7 @@ export function AuthLayoutLawyer() {
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
           />
           <motion.span
-            className="font-calSans text-3xl font-semibold"
+            className="font-calSans text-base font-semibold md:text-lg lg:text-3xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -32,7 +32,7 @@ export function AuthLayoutLawyer() {
         </div>
 
         <motion.footer
-          className="text-sm"
+          className="flex items-center justify-center text-sm md:justify-start"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
